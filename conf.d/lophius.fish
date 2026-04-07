@@ -43,7 +43,11 @@ set -g LOPHIUS_COMMON_OPTS \
   --height='80%' \
   --print0 \
   --no-separator \
-  --select-1
+  --select-1 \
+  --border=rounded \
+  --prompt='❯ ' \
+  --pointer='▶' \
+  --marker='✓'
 
 # === Headers ===
 set -g LOPHIUS_GIT_REF_HEADER_FULL 'C-b: branch, C-c: commit, C-t: tag, C-r: reflog'
