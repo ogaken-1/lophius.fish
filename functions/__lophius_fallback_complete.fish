@@ -21,6 +21,9 @@ function __lophius_fallback_complete
   # Get completion candidates
   set -l -- list (complete -C --escape -- (string join -- ' ' (commandline -pc $cl_tokenize_opt) $token | string collect))
 
+  # Dim the description part (after tab) for fzf --ansi display
+  set -- list (string replace -r -- '\t(.*)' "\t\e[2m\$1\e[0m" $list)
+
   if test -z "$list"
     commandline -f repaint
     return
