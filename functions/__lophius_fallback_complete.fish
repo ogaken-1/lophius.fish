@@ -26,10 +26,17 @@ function __lophius_fallback_complete
     return
   end
 
-  # Pipe candidates through fzf
-  set -l -- result (string collect -- $list | fzf $LOPHIUS_COMMON_OPTS --delimiter="\t" --tabstop=8 --wrap-sign=\t"↳ " --accept-nth=1)
+  # Pipe candidates through fzf with --print0 --expect for NUL-delimited output
+  # Result format: key\0selection1\0selection2\0...
+  set -l -- result (string collect -- $list \
+    | fzf $LOPHIUS_COMMON_OPTS --print0 --expect=alt-enter \
+        --delimiter="\t" --tabstop=8 --wrap-sign=\t"↳ " \
+    | __lophius_fallback_parse_result)
 
   if test -n "$result"
+    # Extract first tab-delimited field (completion text without description)
+    set -- result (string replace -r -- '\t.*' '' $result)
+
     # No extra space after single selection that ends with path separator
     set -l -- tail ' '
     test (count $result) -eq 1
