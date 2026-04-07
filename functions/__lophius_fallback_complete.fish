@@ -26,11 +26,27 @@ function __lophius_fallback_complete
     return
   end
 
+  # Calculate tabstop for description alignment
+  # Adapted from junegunn/fzf shell/completion.fish (lines 119-133)
+  if set -l -- tabstop (string match -rga -- '--tabstop[= ](?:0*)([1-9]\\d+|[4-9])' "$FZF_DEFAULT_OPTS")[-1]
+    set -- tabstop (math $tabstop - 4)
+  else
+    set -- tabstop 4
+  end
+  set -l -- max_columns (math $COLUMNS - 40)
+  for i in $list[1..500]
+    set -l -- item (string split -f 1 -- \t $i)
+    and set -l -- len (string length -V -- $item)
+    and test "$len" -gt "$tabstop" -a "$len" -lt "$max_columns"
+    and set -- tabstop $len
+  end
+  set -- tabstop (math $tabstop + 4)
+
   # Pipe candidates through fzf with --print0 --expect for NUL-delimited output
   # Result format: key\0selection1\0selection2\0...
   set -l -- result (string collect -- $list \
     | fzf $LOPHIUS_COMMON_OPTS --print0 --expect=alt-enter \
-        --delimiter="\t" --tabstop=8 --wrap-sign=\t"↳ " \
+        --delimiter="\t" --tabstop=$tabstop --no-multi-line --wrap-sign=\t"↳ " \
     | __lophius_fallback_parse_result)
 
   if test -n "$result"
