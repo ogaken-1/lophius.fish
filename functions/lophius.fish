@@ -64,5 +64,5 @@ function lophius
     end
   end
 
-  commandline -f complete
+  __lophius_fallback_complete
 end

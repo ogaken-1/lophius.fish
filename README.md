@@ -87,6 +87,7 @@ Add repo to `inputs` of flake.
 - **git**: Context-aware completion for subcommands (branches, commits, files, remotes, etc.) with preview
 - **cd**: Directory completion with preview
 - **kill**: Process completion
+- **Fallback**: Falls back to fish's `complete -C` piped through fzf for unconfigured commands
 
 Press `?` to toggle preview in fzf.
 
@@ -101,6 +102,7 @@ set -g LOPHIUS_NO_DEFAULT_BINDING 1
 ## Acknowledgments
 
 - [zeno.zsh](https://github.com/yuki-yano/zeno.zsh) by [@yuki-yano](https://github.com/yuki-yano) - Original implementation for zsh
+- [fzf](https://github.com/junegunn/fzf) by [@junegunn](https://github.com/junegunn) - The `complete -C` based fallback is adapted from fzf's `shell/completion.fish` (MIT License). See `LICENSE`.
 
 ## License
 
