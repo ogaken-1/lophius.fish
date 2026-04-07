@@ -58,7 +58,10 @@ function lophius
 
   # Fall back to native completion when mid-token (e.g. typing "git sta<TAB>")
   # to avoid fzf hijacking incremental token completion.
-  if test -n (commandline -t)
+  # Exception: '-' and '--' are not mid-token (they are option prefix stubs
+  # that should trigger fzf option completion, not native incremental completion).
+  set -l _token (commandline -t)
+  if test -n "$_token" && test "$_token" != "-" && test "$_token" != "--"
     commandline -f complete
     return
   end
