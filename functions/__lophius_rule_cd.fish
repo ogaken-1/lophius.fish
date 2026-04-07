@@ -1,4 +1,4 @@
-# __fzf_complete_rule_cd.fish - cd completion rules
+# __lophius_rule_cd.fish - cd completion rules
 #
 # Completion rule is ported from zeno.zsh
 # https://github.com/yuki-yano/zeno.zsh
@@ -6,10 +6,10 @@
 # MIT License
 # Copyright (c) 2021 Yuki Yano
 
-function __fzf_complete_rule_cd
+function __lophius_rule_cd
   set -l cmd (commandline)
   if string match -rq '^cd $' -- $cmd
-    __fzf_complete_run \
+    __lophius_run \
       "find . -maxdepth 5 -path '*/.git' -prune -o -type d -print0" \
       "cut -c 3-" \
       --read0 \

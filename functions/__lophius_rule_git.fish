@@ -1,5 +1,5 @@
-# __fzf_complete_git.fish - Git Completion rules
-# See: ../conf.d/fzf_complete.fish ./fzf_complete.fish
+# __lophius_git.fish - Git Completion rules
+# See: ../conf.d/lophius.fish ./lophius.fish
 #
 # Git completion patterns ported from zeno.zsh
 # https://github.com/yuki-yano/zeno.zsh
@@ -9,15 +9,15 @@
 
 # === Transformers ===
 # fzfでの選択結果をcommandline引数形式に変換
-function __fzf_complete_git_status_to_arg
+function __lophius_git_status_to_arg
   cat | string sub -s 4
 end
 
-function __fzf_complete_git_ref_to_arg
+function __lophius_git_ref_to_arg
   cat | string split \t | head -1 | awk '{ print $2 }'
 end
 
-function __fzf_complete_git_stash_to_arg
+function __lophius_git_stash_to_arg
   cat | string split \t | head -1 | awk '{ print $1 }'
 end
 
@@ -28,7 +28,7 @@ end
 # multi: true or false
 # bind_type: ref_full, ref_simple, file, stash
 # Outputs nothing if no match found
-function __fzf_complete_git_parse_cmdline
+function __lophius_git_parse_cmdline
   set -l cmd $argv[1]
 
   # git add
@@ -363,7 +363,7 @@ end
 # Build configuration based on completion metadata
 # Arguments: source_type multi bind_type prompt
 # Output format (null-separated): source\0transformer\0opt1\0opt2\0...
-function __fzf_complete_git_build_config
+function __lophius_git_build_config
   set -l source_type $argv[1]
   set -l multi $argv[2]
   set -l bind_type $argv[3]
@@ -376,56 +376,56 @@ function __fzf_complete_git_build_config
   # Set source and transformer based on source_type
   switch $source_type
     case status_file
-      set source __fzf_complete_git_source_status
-      set -a opts $FZF_COMPLETE_GIT_PRESET_STATUS
-      set transformer __fzf_complete_git_status_to_arg
+      set source __lophius_git_source_status
+      set -a opts $LOPHIUS_GIT_PRESET_STATUS
+      set transformer __lophius_git_status_to_arg
 
     case ls_file
-      set source __fzf_complete_git_source_ls_files
-      set -a opts $FZF_COMPLETE_GIT_PRESET_LS_FILES
+      set source __lophius_git_source_ls_files
+      set -a opts $LOPHIUS_GIT_PRESET_LS_FILES
 
     case staged_file
-      set source __fzf_complete_git_source_staged
-      set -a opts $FZF_COMPLETE_GIT_PRESET_STAGED
+      set source __lophius_git_source_staged
+      set -a opts $LOPHIUS_GIT_PRESET_STAGED
 
     case modified_file
-      set source __fzf_complete_git_source_modified
-      set -a opts $FZF_COMPLETE_GIT_PRESET_MODIFIED
+      set source __lophius_git_source_modified
+      set -a opts $LOPHIUS_GIT_PRESET_MODIFIED
 
     case branch
-      set source __fzf_complete_git_source_branch
-      set transformer __fzf_complete_git_ref_to_arg
+      set source __lophius_git_source_branch
+      set transformer __lophius_git_ref_to_arg
 
     case remote_branch
-      set source __fzf_complete_git_source_remote_branch
-      set transformer __fzf_complete_git_ref_to_arg
-      set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
+      set source __lophius_git_source_remote_branch
+      set transformer __lophius_git_ref_to_arg
+      set -a opts $LOPHIUS_GIT_PRESET_REF_NO_HEADER
 
     case switch_branch
-      set source __fzf_complete_git_source_switch_branch
-      set transformer __fzf_complete_git_ref_to_arg
-      set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
+      set source __lophius_git_source_switch_branch
+      set transformer __lophius_git_ref_to_arg
+      set -a opts $LOPHIUS_GIT_PRESET_REF_NO_HEADER
 
     case commit
-      set source __fzf_complete_git_source_log
-      set transformer __fzf_complete_git_ref_to_arg
+      set source __lophius_git_source_log
+      set transformer __lophius_git_ref_to_arg
 
     case tag
-      set source __fzf_complete_git_source_tag
-      set transformer __fzf_complete_git_ref_to_arg
+      set source __lophius_git_source_tag
+      set transformer __lophius_git_ref_to_arg
 
     case stash
-      set source __fzf_complete_git_source_stash
-      set -a opts $FZF_COMPLETE_GIT_PRESET_STASH
-      set transformer __fzf_complete_git_stash_to_arg
+      set source __lophius_git_source_stash
+      set -a opts $LOPHIUS_GIT_PRESET_STASH
+      set transformer __lophius_git_stash_to_arg
 
     case remote
-      set source __fzf_complete_git_source_remote
-      set -a opts $FZF_COMPLETE_GIT_PRESET_REMOTE
+      set source __lophius_git_source_remote
+      set -a opts $LOPHIUS_GIT_PRESET_REMOTE
 
     case author
-      set source __fzf_complete_git_source_author
-      set -a opts $FZF_COMPLETE_GIT_PRESET_AUTHOR
+      set source __lophius_git_source_author
+      set -a opts $LOPHIUS_GIT_PRESET_AUTHOR
   end
 
   # Set opts based on bind_type for ref types (branch, commit, tag)
@@ -434,14 +434,14 @@ function __fzf_complete_git_build_config
       switch $bind_type
         case ref_full
           # Full preset with header (shows reload keys)
-          set -a opts $FZF_COMPLETE_GIT_PRESET_REF
+          set -a opts $LOPHIUS_GIT_PRESET_REF
         case ref_simple
           # Simple preset: use LOG_SIMPLE for commits, no header for branches/tags
           switch $source_type
             case commit
-              set -a opts $FZF_COMPLETE_GIT_PRESET_LOG_SIMPLE
+              set -a opts $LOPHIUS_GIT_PRESET_LOG_SIMPLE
             case branch tag
-              set -a opts $FZF_COMPLETE_GIT_PRESET_REF_NO_HEADER
+              set -a opts $LOPHIUS_GIT_PRESET_REF_NO_HEADER
           end
       end
   end
@@ -462,11 +462,11 @@ function __fzf_complete_git_build_config
   printf '%s\0' $source $transformer $opts
 end
 
-function __fzf_complete_rule_git
+function __lophius_rule_git
   set -l cmd (commandline)
 
   # Parse commandline to get completion metadata
-  set -l parse_result (__fzf_complete_git_parse_cmdline $cmd)
+  set -l parse_result (__lophius_git_parse_cmdline $cmd)
   test -z "$parse_result" && return 1
 
   # Split result into source_type, multi, bind_type, and prompt
@@ -477,13 +477,13 @@ function __fzf_complete_rule_git
   set -l prompt $parts[4]
 
   # Build configuration and parse null-separated output
-  set -l config_output (__fzf_complete_git_build_config $source_type $multi $bind_type $prompt | string split0)
+  set -l config_output (__lophius_git_build_config $source_type $multi $bind_type $prompt | string split0)
 
   # First element is source, second is transformer, rest are opts
   set -l source $config_output[1]
   set -l transformer $config_output[2]
-  set -l opts $FZF_COMPLETE_COMMON_OPTS $config_output[3..]
+  set -l opts $LOPHIUS_COMMON_OPTS $config_output[3..]
 
-  __fzf_complete_run "$source" "$transformer" $opts
+  __lophius_run "$source" "$transformer" $opts
   return 0
 end

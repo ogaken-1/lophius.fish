@@ -1,18 +1,18 @@
-# fzf_complete.fish
-# ref: ../conf.d/fzf_complete.fish
+# lophius.fish
+# ref: ../conf.d/lophius.fish
 
-function __fzf_complete_load_rules
-  set -g __fzf_complete_rules_loaded && return
-  set -g __fzf_complete_rules_loaded 1
+function __lophius_load_rules
+  set -g __lophius_rules_loaded && return
+  set -g __lophius_rules_loaded 1
 
   for dir in $fish_function_path
-    for file in $dir/__fzf_complete_rule_*.fish
+    for file in $dir/__lophius_rule_*.fish
       test -f $file && source $file
     end
   end
 end
 
-function __fzf_complete_run
+function __lophius_run
   set -l source $argv[1]
   set -l transformer $argv[2]
   set -e argv[1..2]
@@ -22,9 +22,9 @@ function __fzf_complete_run
   # Check if source is a function, if so call directly, otherwise eval
   set -l selections
   if functions -q $source
-    set selections ($source | fzf $FZF_COMPLETE_COMMON_OPTS $opts | string split0)
+    set selections ($source | fzf $LOPHIUS_COMMON_OPTS $opts | string split0)
   else
-    set selections (eval $source | fzf $FZF_COMPLETE_COMMON_OPTS $opts | string split0)
+    set selections (eval $source | fzf $LOPHIUS_COMMON_OPTS $opts | string split0)
   end
 
   # first element is typed key (--expect)
@@ -49,16 +49,16 @@ function __fzf_complete_run
   commandline -f repaint
 end
 
-function fzf_complete
+function lophius
   # Skip fzf completion when fish's pager is active (cycling through native completions)
   if commandline --paging-mode
     commandline -f complete
     return
   end
 
-  __fzf_complete_load_rules
+  __lophius_load_rules
 
-  for func in (functions -a | string match '__fzf_complete_rule_*')
+  for func in (functions -a | string match '__lophius_rule_*')
     if $func
       return 0
     end

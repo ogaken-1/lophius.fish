@@ -1,9 +1,9 @@
-# Test __fzf_complete_git_build_config output format and values
+# Test __lophius_git_build_config output format and values
 # The function outputs null-separated: source, transformer, then opts
 # Arguments: source_type multi bind_type prompt
 
-source (status dirname)/../functions/__fzf_complete_rule_git.fish
-source (status dirname)/../conf.d/fzf_complete.fish
+source (status dirname)/../functions/__lophius_rule_git.fish
+source (status dirname)/../conf.d/lophius.fish
 
 # Helper function to parse build_config output
 # Arguments: source_type multi bind_type prompt
@@ -14,7 +14,7 @@ function _parse_build_config
   set -l prompt $argv[4]
 
   # Parse null-separated output
-  set -l output (__fzf_complete_git_build_config $source_type $multi $bind_type $prompt | string split0)
+  set -l output (__lophius_git_build_config $source_type $multi $bind_type $prompt | string split0)
 
   # First is source, second is transformer, rest are opts
   set -l source $output[1]
@@ -48,7 +48,7 @@ end
 
 @test "status_file: transformer is status_to_arg" (
   set result (_parse_build_config status_file true file "Test> ")
-  string match -q "*transformer:__fzf_complete_git_status_to_arg*" -- $result
+  string match -q "*transformer:__lophius_git_status_to_arg*" -- $result
 ) $status -eq 0
 
 @test "status_file: opts has prompt" (
@@ -59,12 +59,12 @@ end
 # === Test branch type (singular - no --multi) ===
 @test "branch: source is branch source" (
   set result (_parse_build_config branch false ref_full "Test> ")
-  string match -q "source:__fzf_complete_git_source_branch" -- $result
+  string match -q "source:__lophius_git_source_branch" -- $result
 ) $status -eq 0
 
 @test "branch: transformer is ref_to_arg" (
   set result (_parse_build_config branch false ref_full "Test> ")
-  string match -q "*transformer:__fzf_complete_git_ref_to_arg*" -- $result
+  string match -q "*transformer:__lophius_git_ref_to_arg*" -- $result
 ) $status -eq 0
 
 @test "branch: opts does not have multi when multi=false" (
@@ -81,18 +81,18 @@ end
 # === Test commit type ===
 @test "commit: source is log source" (
   set result (_parse_build_config commit false ref_full "Test> ")
-  string match -q "source:__fzf_complete_git_source_log" -- $result
+  string match -q "source:__lophius_git_source_log" -- $result
 ) $status -eq 0
 
 @test "commit: transformer is ref_to_arg" (
   set result (_parse_build_config commit false ref_full "Test> ")
-  string match -q "*transformer:__fzf_complete_git_ref_to_arg*" -- $result
+  string match -q "*transformer:__lophius_git_ref_to_arg*" -- $result
 ) $status -eq 0
 
 # === Test ls_file type ===
 @test "ls_file: source is ls-files" (
   set result (_parse_build_config ls_file true file "Test> ")
-  string match -q "source:__fzf_complete_git_source_ls_files" -- $result
+  string match -q "source:__lophius_git_source_ls_files" -- $result
 ) $status -eq 0
 
 @test "ls_file: transformer is empty" (
@@ -103,35 +103,35 @@ end
 # === Test tag type ===
 @test "tag: source is tag source" (
   set result (_parse_build_config tag false ref_simple "Test> ")
-  string match -q "source:__fzf_complete_git_source_tag" -- $result
+  string match -q "source:__lophius_git_source_tag" -- $result
 ) $status -eq 0
 
 @test "tag: transformer is ref_to_arg" (
   set result (_parse_build_config tag false ref_simple "Test> ")
-  string match -q "*transformer:__fzf_complete_git_ref_to_arg*" -- $result
+  string match -q "*transformer:__lophius_git_ref_to_arg*" -- $result
 ) $status -eq 0
 
 # === Test stash type ===
 @test "stash: source is stash source" (
   set result (_parse_build_config stash false stash "Test> ")
-  string match -q "source:__fzf_complete_git_source_stash" -- $result
+  string match -q "source:__lophius_git_source_stash" -- $result
 ) $status -eq 0
 
 @test "stash: transformer is stash_to_arg" (
   set result (_parse_build_config stash false stash "Test> ")
-  string match -q "*transformer:__fzf_complete_git_stash_to_arg*" -- $result
+  string match -q "*transformer:__lophius_git_stash_to_arg*" -- $result
 ) $status -eq 0
 
 # === Test branch with ref_simple bind_type (no header) ===
 @test "branch ref_simple: source is still branch source" (
   set result (_parse_build_config branch false ref_simple "Test> ")
-  string match -q "source:__fzf_complete_git_source_branch" -- $result
+  string match -q "source:__lophius_git_source_branch" -- $result
 ) $status -eq 0
 
 # === Test commit with ref_simple bind_type ===
 @test "commit ref_simple: uses LOG_SIMPLE preset" (
   set result (_parse_build_config commit false ref_simple "Test> ")
-  string match -q "source:__fzf_complete_git_source_log" -- $result
+  string match -q "source:__lophius_git_source_log" -- $result
 ) $status -eq 0
 
 # === Test commit with multi=true ===
@@ -155,17 +155,17 @@ end
 # ============================================================
 # remote
 # ============================================================
-@test "remote: source is remote source" (__fzf_complete_git_build_config remote false file 'test> ' | string split0)[1] = __fzf_complete_git_source_remote
-@test "remote: transformer is empty" (__fzf_complete_git_build_config remote false file 'test> ' | string split0)[2] = ''
+@test "remote: source is remote source" (__lophius_git_build_config remote false file 'test> ' | string split0)[1] = __lophius_git_source_remote
+@test "remote: transformer is empty" (__lophius_git_build_config remote false file 'test> ' | string split0)[2] = ''
 
 # ============================================================
 # remote_branch
 # ============================================================
-@test "remote_branch: source is remote branch source" (__fzf_complete_git_build_config remote_branch false ref_simple 'test> ' | string split0)[1] = __fzf_complete_git_source_remote_branch
-@test "remote_branch: transformer is ref_to_arg" (__fzf_complete_git_build_config remote_branch false ref_simple 'test> ' | string split0)[2] = __fzf_complete_git_ref_to_arg
+@test "remote_branch: source is remote branch source" (__lophius_git_build_config remote_branch false ref_simple 'test> ' | string split0)[1] = __lophius_git_source_remote_branch
+@test "remote_branch: transformer is ref_to_arg" (__lophius_git_build_config remote_branch false ref_simple 'test> ' | string split0)[2] = __lophius_git_ref_to_arg
 
 # ============================================================
 # switch_branch
 # ============================================================
-@test "switch_branch: source is switch branch source" (__fzf_complete_git_build_config switch_branch false ref_simple 'test> ' | string split0)[1] = __fzf_complete_git_source_switch_branch
-@test "switch_branch: transformer is ref_to_arg" (__fzf_complete_git_build_config switch_branch false ref_simple 'test> ' | string split0)[2] = __fzf_complete_git_ref_to_arg
+@test "switch_branch: source is switch branch source" (__lophius_git_build_config switch_branch false ref_simple 'test> ' | string split0)[1] = __lophius_git_source_switch_branch
+@test "switch_branch: transformer is ref_to_arg" (__lophius_git_build_config switch_branch false ref_simple 'test> ' | string split0)[2] = __lophius_git_ref_to_arg

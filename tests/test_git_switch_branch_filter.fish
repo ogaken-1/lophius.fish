@@ -1,4 +1,4 @@
-# Test FZF_COMPLETE_GIT_SWITCH_BRANCH_SOURCE filtering logic
+# Test LOPHIUS_GIT_SWITCH_BRANCH_SOURCE filtering logic
 #
 # The filtering rules are:
 # 1. Local branches: Always included
@@ -9,7 +9,7 @@
 #    - If duplicate exists AND checkout.defaultRemote is set but doesn't match: excluded
 # 3. HEAD references (e.g., origin/HEAD): Always excluded
 
-source (status dirname)/../conf.d/fzf_complete.fish
+source (status dirname)/../conf.d/lophius.fish
 
 # Add functions directory to fish_function_path for autoloading
 set -g fish_function_path (status dirname)/../functions $fish_function_path
@@ -45,7 +45,7 @@ end
 
 # Get branch names from switch_branch source output (extracts second field after [switch])
 function _get_switch_branches
-    __fzf_complete_git_source_switch_branch 2>/dev/null | \
+    __lophius_git_source_switch_branch 2>/dev/null | \
         string replace -ra '\x1b\[[0-9;]*m' '' | \
         string match -r '\[switch\]\s+(\S+)' | \
         string match -rv '^\[switch\]'

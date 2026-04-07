@@ -1,8 +1,26 @@
-# fzf_complete.fish
+# lophius.fish
 
 Tab completion via fzf for fish shell.
 
 Most of snippets are ported from https://github.com/yuki-yano/zeno.zsh
+
+## Breaking change in v0.5.0
+
+The namespace has been completely changed from `fzf_complete` / `FZF_COMPLETE_*` to `lophius` / `LOPHIUS_*`.
+
+**Why:** fzf's official distribution now ships a function named `fzf_complete`, which collides with the previous naming of this plugin. To avoid the conflict, the plugin adopts the fully independent name `lophius` — the genus name of anglerfish, which lures fish with bait (a metaphor for luring completions with fzf). The internal `__fzf_complete_*` prefix is renamed together for consistency.
+
+Migration:
+
+```fish
+# Before
+bind tab fzf_complete
+set -g FZF_COMPLETE_NO_DEFAULT_BINDING 1
+
+# After
+bind tab lophius
+set -g LOPHIUS_NO_DEFAULT_BINDING 1
+```
 
 ## Requirements
 
@@ -13,7 +31,7 @@ Most of snippets are ported from https://github.com/yuki-yano/zeno.zsh
 ### Fisher
 
 ```fish
-fisher install ogaken-1/fzf_complete.fish
+fisher install ogaken-1/lophius.fish
 ```
 
 ### home-manager (Nix)
@@ -28,11 +46,11 @@ Add repo to `inputs` of flake.
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fish-fzf-complete = {
-      url = "github:ogaken-1/fzf_complete.fish";
+    lophius = {
+      url = "github:ogaken-1/lophius.fish";
     };
   };
-  outputs = { nixpkgs, home-manager, fish-fzf-complete, ...  }:
+  outputs = { nixpkgs, home-manager, lophius, ...  }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -41,14 +59,14 @@ Add repo to `inputs` of flake.
       homeConfiguration = { pkgs, ... }: {
         # Add overlay to `nixpkgs.overlays`
         nixpkgs.overlays = [
-          fish-fzf-complete.overlays.default
+          lophius.overlays.default
         ];
         programs.fish = {
           enable = true;
         };
         # Add package to `home.packages`.
         home.packages = [
-          pkgs.fishPlugins.fzf-complete
+          pkgs.fishPlugins.lophius
         ];
       };
     in
@@ -74,10 +92,10 @@ Press `?` to toggle preview in fzf.
 
 ## Configuration
 
-Set `FZF_COMPLETE_NO_DEFAULT_BINDING` to disable the default Tab binding:
+Set `LOPHIUS_NO_DEFAULT_BINDING` to disable the default Tab binding:
 
 ```fish
-set -g FZF_COMPLETE_NO_DEFAULT_BINDING 1
+set -g LOPHIUS_NO_DEFAULT_BINDING 1
 ```
 
 ## Acknowledgments

@@ -1,4 +1,4 @@
-function __fzf_complete_git_source_switch_branch
+function __lophius_git_source_switch_branch
   set -l default_remote (git config checkout.defaultRemote 2>/dev/null)
   set -l green (set_color green)
   set -l normal (set_color normal)

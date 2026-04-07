@@ -1,11 +1,11 @@
-# __fzf_complete_rule_docker.fish - Docker Completion rules
-# See: ../conf.d/fzf_complete.fish ./fzf_complete.fish
+# __lophius_rule_docker.fish - Docker Completion rules
+# See: ../conf.d/lophius.fish ./lophius.fish
 #
 # Docker completion patterns for containers, images, volumes, and networks
 
 # === Transformers ===
 # All docker resources use first column (name/repo:tag)
-function __fzf_complete_docker_to_arg
+function __lophius_docker_to_arg
   awk '{ print $1 }'
 end
 
@@ -16,7 +16,7 @@ end
 # multi: true or false
 # bind_type: default
 # Outputs nothing if no match found
-function __fzf_complete_docker_parse_cmdline
+function __lophius_docker_parse_cmdline
   set -l cmd $argv[1]
 
   # docker exec (running containers only)
@@ -103,32 +103,32 @@ end
 # Build fzf configuration for docker completion
 # Arguments: source_type multi bind_type prompt
 # Output: null-separated values: source, transformer, opts...
-function __fzf_complete_docker_build_config
+function __lophius_docker_build_config
   set -l source_type $argv[1]
   set -l multi $argv[2]
   set -l bind_type $argv[3]
   set -l prompt $argv[4]
 
   set -l source
-  set -l transformer __fzf_complete_docker_to_arg
+  set -l transformer __lophius_docker_to_arg
   set -l opts
 
   switch $source_type
     case container
-      set source __fzf_complete_docker_source_container
-      set -a opts $FZF_COMPLETE_DOCKER_PRESET_CONTAINER
+      set source __lophius_docker_source_container
+      set -a opts $LOPHIUS_DOCKER_PRESET_CONTAINER
     case container_running
-      set source __fzf_complete_docker_source_container_running
-      set -a opts $FZF_COMPLETE_DOCKER_PRESET_CONTAINER
+      set source __lophius_docker_source_container_running
+      set -a opts $LOPHIUS_DOCKER_PRESET_CONTAINER
     case image
-      set source __fzf_complete_docker_source_image
-      set -a opts $FZF_COMPLETE_DOCKER_PRESET_IMAGE
+      set source __lophius_docker_source_image
+      set -a opts $LOPHIUS_DOCKER_PRESET_IMAGE
     case volume
-      set source __fzf_complete_docker_source_volume
-      set -a opts $FZF_COMPLETE_DOCKER_PRESET_VOLUME
+      set source __lophius_docker_source_volume
+      set -a opts $LOPHIUS_DOCKER_PRESET_VOLUME
     case network
-      set source __fzf_complete_docker_source_network
-      set -a opts $FZF_COMPLETE_DOCKER_PRESET_NETWORK
+      set source __lophius_docker_source_network
+      set -a opts $LOPHIUS_DOCKER_PRESET_NETWORK
   end
 
   # Add multi option if needed
@@ -143,11 +143,11 @@ function __fzf_complete_docker_build_config
   printf '%s\0' $source $transformer $opts
 end
 
-function __fzf_complete_rule_docker
+function __lophius_rule_docker
   set -l cmd (commandline)
 
   # Parse commandline to get completion metadata
-  set -l parse_result (__fzf_complete_docker_parse_cmdline $cmd)
+  set -l parse_result (__lophius_docker_parse_cmdline $cmd)
   test -z "$parse_result" && return 1
 
   # Check if docker is accessible (user may not be in docker group)
@@ -162,13 +162,13 @@ function __fzf_complete_rule_docker
   set -l prompt $parts[4]
 
   # Build configuration and parse null-separated output
-  set -l config_output (__fzf_complete_docker_build_config $source_type $multi $bind_type $prompt | string split0)
+  set -l config_output (__lophius_docker_build_config $source_type $multi $bind_type $prompt | string split0)
 
   # First element is source, second is transformer, rest are opts
   set -l source $config_output[1]
   set -l transformer $config_output[2]
-  set -l opts $FZF_COMPLETE_COMMON_OPTS $config_output[3..]
+  set -l opts $LOPHIUS_COMMON_OPTS $config_output[3..]
 
-  __fzf_complete_run "$source" "$transformer" $opts
+  __lophius_run "$source" "$transformer" $opts
   return 0
 end

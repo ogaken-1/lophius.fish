@@ -8,7 +8,7 @@ let
   fs = lib.fileset;
 in
 buildFishPlugin {
-  pname = "fzf-complete";
+  pname = "lophius";
   version = "0.4.1";
 
   inputs = [
@@ -26,7 +26,7 @@ buildFishPlugin {
 
   meta = {
     description = "Tab completion via fzf for fish shell.";
-    homepage = "https://github.com/ogaken-1/fzf_complete.fish";
+    homepage = "https://github.com/ogaken-1/lophius.fish";
     license = lib.licenses.mit;
   };
 }

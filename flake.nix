@@ -4,7 +4,7 @@
     { ... }:
     {
       overlays.default = final: prev: {
-        fishPlugins.fzf-complete = prev.callPackage ./package.nix {
+        fishPlugins.lophius = prev.callPackage ./package.nix {
           buildFishPlugin = prev.fishPlugins.buildFishPlugin;
         };
       };
