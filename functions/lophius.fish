@@ -56,6 +56,13 @@ function lophius
     return
   end
 
+  # Fall back to native completion when mid-token (e.g. typing "git sta<TAB>")
+  # to avoid fzf hijacking incremental token completion.
+  if test -n (commandline -t)
+    commandline -f complete
+    return
+  end
+
   __lophius_load_rules
 
   for func in (functions -a | string match '__lophius_rule_*')
