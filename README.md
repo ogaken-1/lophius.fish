@@ -2,7 +2,7 @@
 
 Tab completion via fzf for fish shell.
 
-Most of snippets are ported from https://github.com/yuki-yano/zeno.zsh
+The git and kill snippets are shamelessly stolen from [zeno.zsh](https://github.com/yuki-yano/zeno.zsh).
 
 ## Breaking change in v0.5.0
 
