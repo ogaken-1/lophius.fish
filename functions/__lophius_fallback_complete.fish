@@ -48,7 +48,7 @@ function __lophius_fallback_complete
   # Pipe candidates through fzf with --print0 --expect for NUL-delimited output
   # Result format: key\0selection1\0selection2\0...
   set -l -- result (string collect -- $list \
-    | fzf $LOPHIUS_COMMON_OPTS --print0 --expect=alt-enter \
+    | fzf $LOPHIUS_COMMON_OPTS --multi --print0 --expect=alt-enter \
         --delimiter="\t" --tabstop=$tabstop --no-multi-line --wrap-sign=\t"↳ " \
     | __lophius_fallback_parse_result)
 
