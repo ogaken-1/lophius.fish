@@ -69,6 +69,8 @@ Add repo to `inputs` of flake.
 - **git**: Context-aware completion for subcommands (branches, commits, files, remotes, etc.) with preview
 - **cd**: Directory completion with preview
 - **kill**: Process completion
+- **docker**: Container/image/volume/network completion for common subcommands
+- **dotnet**: csproj/sln/slnx completion for `dotnet run|test --project` and `dotnet build|restore` first argument
 - **Fallback**: Falls back to fish's `complete -C` piped through fzf for unconfigured commands
 
 Press `?` to toggle preview in fzf.

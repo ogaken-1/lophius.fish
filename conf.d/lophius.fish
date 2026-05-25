@@ -135,6 +135,23 @@ set -g LOPHIUS_DOCKER_PRESET_NETWORK \
   --preview=$LOPHIUS_DOCKER_NETWORK_PREVIEW \
   --preview-window=right:40%
 
+# ============================================================
+# Dotnet Configuration
+# ============================================================
+
+# === Dotnet Preview Commands ===
+set -g LOPHIUS_DOTNET_PROJECT_PREVIEW "$LOPHIUS_CAT {}"
+
+# === Dotnet Key Bindings ===
+set -g LOPHIUS_DOTNET_DEFAULT_BIND 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,?:toggle-preview'
+
+# === Dotnet Preset Options ===
+set -g LOPHIUS_DOTNET_PRESET_PROJECT \
+  --no-sort \
+  --bind=$LOPHIUS_DOTNET_DEFAULT_BIND \
+  --preview=$LOPHIUS_DOTNET_PROJECT_PREVIEW \
+  --preview-window=right:50%
+
 if [ -z "$LOPHIUS_NO_DEFAULT_BINDING" ]
   bind tab lophius
 end
