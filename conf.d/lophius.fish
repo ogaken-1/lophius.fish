@@ -7,12 +7,12 @@
 # See LICENSE file for full license information
 
 # === User Configuration ===
-set -g LOPHIUS_GIT_CAT 'cat'
-set -g LOPHIUS_GIT_TREE 'tree'
+set -g LOPHIUS_CAT 'cat'
+set -g LOPHIUS_TREE 'tree'
 
 # === Preview Commands ===
-set -g LOPHIUS_GIT_STATUS_PREVIEW "! git diff --exit-code --color=always -- {-1} || ! git diff --exit-code --cached --color=always -- {-1} 2>/dev/null || $LOPHIUS_GIT_TREE {-1} 2>/dev/null"
-set -g LOPHIUS_GIT_LS_FILES_PREVIEW "$LOPHIUS_GIT_CAT {}"
+set -g LOPHIUS_GIT_STATUS_PREVIEW "! git diff --exit-code --color=always -- {-1} || ! git diff --exit-code --cached --color=always -- {-1} 2>/dev/null || $LOPHIUS_TREE {-1} 2>/dev/null"
+set -g LOPHIUS_GIT_LS_FILES_PREVIEW "$LOPHIUS_CAT {}"
 set -g LOPHIUS_GIT_STAGED_PREVIEW 'git diff --cached --color=always -- {}'
 set -g LOPHIUS_GIT_MODIFIED_PREVIEW 'git diff --color=always -- {}'
 set -g LOPHIUS_GIT_LOG_PREVIEW 'git show --color=always {2}'
